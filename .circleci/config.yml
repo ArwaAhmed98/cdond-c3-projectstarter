@@ -159,6 +159,14 @@ jobs:
             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
             # npm audit --audit-level=critical
       - send_slack
+  notify_slack_on_success:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo "test my app"
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
 #   deploy-infrastructure:
 #     docker:
@@ -325,14 +333,6 @@ jobs:
 #               # your code here
 #             fi
             
-notify_slack_on_success:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - run: echo "test my app"
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
 
 
 workflows:
