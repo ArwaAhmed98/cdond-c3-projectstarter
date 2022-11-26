@@ -4,19 +4,36 @@ orbs:
 
 
 commands:
-
-
+  send_slack:
+    steps:
+      - slack/notify:
+        event: always
+        custom: |
+          {
+            "blocks": [
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "plain_text",
+                    "text": "*This is a text notification*",
+                    "emoji": true
+                  }
+                ]
+              }
+            ]
+          }
   # destroy-environment:
-  #   description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-  #   parameters:
-  #     # Add parameter here   
-  #   steps:
-  #     - run:
-  #         name: Destroy environments
-  #         when: on_fail
-  #         command: |
-  #           # Your code here
-  #           exit 1
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      # Add parameter here   
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            # Your code here
+            exit 1
 
   # revert-migrations:
   #   description: Revert the last migration if successfully run in the current workflow.
@@ -54,12 +71,8 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
+      - send_slack
+
 
   build-backend:
     docker:
@@ -77,12 +90,8 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
+      - send_slack
+
 
   test-frontend:
     docker:
@@ -99,12 +108,7 @@ jobs:
             cd frontend
             npm install
             npm run test
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
+      - send_slack
                 
   test-backend:
     docker:
@@ -120,12 +124,7 @@ jobs:
             cd backend
             npm install
             npm run test
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
+      - send_slack
             
   scan-frontend:
     docker:
@@ -143,12 +142,7 @@ jobs:
             npm audit fix --audit-level=critical --force
             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
             # npm audit --audit-level=critical
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
+      - send_slack
 
   scan-backend:
     docker:
@@ -166,6 +160,7 @@ jobs:
             npm audit fix --audit-level=critical --force
             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
             # npm audit --audit-level=critical
+      - send_slack
 
 #   deploy-infrastructure:
 #     docker:
@@ -332,6 +327,15 @@ jobs:
 #               # your code here
 #             fi
             
+notify_slack_on_success:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo "test my app"
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
+
 
 workflows:
   default:
@@ -346,9 +350,9 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
-      - send-notification:
-      - notify:
-          context: slack-secrets
+      - notify_slack_on_success:
+          requires: [build-backend,build-frontend,scan-frontend,scan-backend]
+
 
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
