@@ -8,21 +8,21 @@ commands:
           event: fail
           # event: pass
           template: basic_fail_1
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "plain_text",
-                      "text": "*This is a text notification*",
-                      "emoji": true
-                    }
-                  ]
-                }
-              ]
-            }
+          # custom: |
+          #   {
+          #     "blocks": [
+          #       {
+          #         "type": "section",
+          #         "fields": [
+          #           {
+          #             "type": "plain_text",
+          #             "text": "*This is a text notification*",
+          #             "emoji": true
+          #           }
+          #         ]
+          #       }
+          #     ]
+          #   }
   # destroy-environment:
     # description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     # parameters:
