@@ -1,12 +1,12 @@
 version: 2.1
 orbs:
   slack: circleci/slack@4.1
-jobs:
-  notify:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - slack/notify:
+
+
+commands:
+  slack_notification:
+  steps:
+    - slack/notify:
           custom: |
             {
               "blocks": [
@@ -23,7 +23,7 @@ jobs:
               ]
             }
           event: always
-commands:
+
   # destroy-environment:
   #   description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
   #   parameters:
@@ -337,6 +337,7 @@ workflows:
       - send-notification:
       - notify:
           context: slack-secrets
+      - slack_notification
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
