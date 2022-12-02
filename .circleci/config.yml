@@ -214,7 +214,7 @@ jobs:
             aws cloudformation deploy \
             --template-file .circleci/files/frontend.yml \
             --tags project=udapeople \
-            --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
             --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
       - run:
           name: Add back-end ip to ansible inventory
@@ -246,7 +246,7 @@ jobs:
             - "48:8e:2c:c4:5e:eb:e6:57:f4:2f:37:65:ae:f6:69:99"
       # attach workspace
       - attach_workspace:
-          at: ~/project/.circleci/ansible/
+          at: ~/
       - run:
           name: Configure server
           command: |
