@@ -257,7 +257,9 @@ jobs:
           command: |
             cd .circleci/ansible/
             cat inventory.txt
-        
+            # mkdir -p ~/.ansible.cfg
+            echo "ANSIBLE_HOST_KEY_CHECKING=False" > ~/.ansible.cfg
+            # export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment
             # Your code here
