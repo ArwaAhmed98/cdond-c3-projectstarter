@@ -398,14 +398,11 @@ jobs:
             echo "arwaaaaaaaaaaaa#####################################################aa"
             echo "Contents  of the inventory.txt file is -----------------"
             cat inventory.txt
+            sleep 200
             export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt deploy-backend.yml
             
-  wait_to_ssh:
-    steps:
-      - run:
-          command: |
-            sleep 200
+
       # Here's where you will add some code to rollback on failure  
       # - destroy-environment
       # - revert-migrations
@@ -497,6 +494,8 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
+      
+      
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
