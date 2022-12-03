@@ -381,8 +381,9 @@ jobs:
             echo "iam here"
             pwd
             # Zip the directory
-            tar -czvf artifact.tar.gz  .
-            cd .circleci/ansible
+            tar -C backend -czvf artifact.tar.gz  dist/* package/*
+            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+            cd .circleci/ansible/
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
             export ANSIBLE_HOST_KEY_CHECKING=False
