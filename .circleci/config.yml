@@ -325,7 +325,7 @@ jobs:
       - checkout
       - install_ansible_ubuntu
       - install_aws_cli
-      - install_nodejs_13
+      - install_nodejs13
       - attach_workspace:
           at: ~/
       - run:
@@ -361,7 +361,7 @@ jobs:
       - checkout
       - install_ansible_ubuntu
       - install_aws_cli
-      - install_nodejs_13
+      - install_nodejs13
       - attach_workspace:
           at: ~/
       - add_ssh_keys:
