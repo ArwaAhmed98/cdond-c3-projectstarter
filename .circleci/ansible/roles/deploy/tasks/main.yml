@@ -1,17 +1,14 @@
-- name: Creates directory
+- name: Creates directory # this added because of that error
+#dest '/home/ubuntu/project' must be an existing dir"
   file:
-    path: ~/web
+    path: ~/project/web
     state: directory
-
-
-- name: "Unarchive files and move to ec2 instance"
-  unarchive:
+- name: Unarchive a file that is already on the remote machine  
+  unarchive:  
     src: ~/project/artifact.tar.gz
-    dest: ~/web
-
-
-- name: Executing node
+    dest: ~/project/web
+- name: "start the server"
   shell: |
-    cd ~/web
+    npm install
     pm2 stop default
     pm2 start npm -- start
