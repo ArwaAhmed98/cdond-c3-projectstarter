@@ -5,7 +5,7 @@
     state: directory
 - name: Unarchive a file that is already on the remote machine  
   unarchive:  
-    src: ~/project/artifact.tar.gz
+    src: /home/circleci/project/artifact.tar.gz
     dest: ~/project/web
     remote_src: yes
 - name: "start the server"
