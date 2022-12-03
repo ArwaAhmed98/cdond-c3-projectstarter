@@ -329,6 +329,8 @@ jobs:
       - install_ansible_ubuntu
       - install_aws_cli
       - install_nodejs13
+      - restore_cache:
+          keys: [frontend-build]
       - attach_workspace:
           at: ~/
       - run:
@@ -355,15 +357,13 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure
-      # - destroy-environment
-      # - revert-migrations
+      - destroy-environment
+      - revert-migrations
                     
   deploy-backend:
     docker:
-      # Docker image here that supports Ansible
       - image: cimg/base:stable
     steps:
-      # Checkout code from git
       - checkout
       - install_ansible_ubuntu
       - install_aws_cli
@@ -373,6 +373,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "48:8e:2c:c4:5e:eb:e6:57:f4:2f:37:65:ae:f6:69:99"
+      - restore_cache:
+          keys: [frontend-build]
       - run:
           name: Deploy backend
           command: |
@@ -380,55 +382,42 @@ jobs:
             npm i
             npm run build
             cd ..
-            echo "arwaaaaaaa##################################################"
-            ls
-            ls -a
-            pwd
-            echo "arwaaaaaaaaaaaa#####################################################aa"
-            # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
-            ls
-            ls -a
-            pwd
-            echo "arwaaaaaaaaaaaa#####################################################aa"
             cd .circleci/ansible
             ls
             ls -a
             pwd
-            echo "arwaaaaaaaaaaaa#####################################################aa"
             echo "Contents  of the inventory.txt file is -----------------"
             cat inventory.txt
-          
             export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt deploy-backend.yml
-            
+      - destroy-environment
+      - revert-migrations
 
+  smoke-test:
+    docker:
+      - image: cimg/base:stable
+      # Lightweight Docker image
+    steps:
+      # Checkout code from git
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+      - run:
+          name: Get backend url
+          command: |
+            # your code here
+      - run:
+          name: Backend smoke test.
+          command: |
+            # your code here
+      - run:
+          name: Frontend smoke test.
+          command: |
+            # your code here
       # Here's where you will add some code to rollback on failure  
-      # - destroy-environment
-      # - revert-migrations
-
-#   smoke-test:
-#     docker:
-#       # Lightweight Docker image 
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#       - run:
-#           name: Backend smoke test.
-#           command: |
-#             # your code here
-#       - run:
-#           name: Frontend smoke test.
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
 
 #   cloudfront-update:
 #     docker:
