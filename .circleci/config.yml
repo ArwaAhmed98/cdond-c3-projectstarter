@@ -383,6 +383,10 @@ jobs:
             echo "arwaaaaaaaaaaaa#####################################################aa"
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
+            ls
+            ls -a
+            pwd
+            echo "arwaaaaaaaaaaaa#####################################################aa"
             cd .circleci/ansible
             ls
             ls -a
