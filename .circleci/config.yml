@@ -376,6 +376,7 @@ jobs:
             cd backend
             npm i
             npm run build
+            cd ..
             echo "arwaaaaaaa##################################################"
             ls
             ls -a
