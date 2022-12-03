@@ -18,7 +18,7 @@
 
 
     - name: "check python is installed or not"
-      Your code here
+      # Your code here
       raw: test -e /usr/bin/python || (apt -y update && apt install -y python3)
       #  apt -y update && apt install -y python3
       changed_when: false
