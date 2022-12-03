@@ -1,11 +1,11 @@
 - name: Creates directory # this added because of that error
-# dest '/home/ubuntu/project' must be an existing dir"
+#dest '/home/ubuntu/project' must be an existing dir"
   file:
     path: ~/project/web
     state: directory
 - name: Unarchive a file that is already on the remote machine  
   unarchive:  
-    src: ~/project/backend/artifact.tar.gz
+    src: artifact.tar.gz
     dest: ~/project/web
     remote_src: yes
 - name: "start the server"
