@@ -278,6 +278,8 @@ jobs:
       # Checkout code from git
       - checkout
       - install_aws_cli
+      - restore_cache:
+          key: backend-build
       - run:
           name: Run migrations
           command: |
