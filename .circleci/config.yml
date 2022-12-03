@@ -56,7 +56,7 @@ commands:
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.WORKFLOW_ID >>
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.WORKFLOW_ID >>
          
-  install-nodejs13:
+  install_nodejs13:
     steps:
       - run:
           name: install nodejs 13
