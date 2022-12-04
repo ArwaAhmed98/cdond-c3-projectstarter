@@ -16,6 +16,11 @@
 - name: Update apt cache and make sure Vim is installed
   become: true
   apt:
+    name: ["npm"]
+    update_cache: yes
+- name: Update apt cache and make sure Vim is installed
+  become: true
+  apt:
     name: ["nodejs"]
     update_cache: yes
 - name: "install pm2 globally"
