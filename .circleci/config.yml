@@ -373,8 +373,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "48:8e:2c:c4:5e:eb:e6:57:f4:2f:37:65:ae:f6:69:99"
-      - restore_cache:
-          keys: [backend-build]
+      # - restore_cache:
+      #     keys: [backend-build]
       - run: 
           command: |
             pip install awscli
@@ -395,6 +395,7 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
             export ANSIBLE_HOST_KEY_CHECKING=False
+            ansible-playbook -i inventory.txt configure-server.yml
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment
       - revert-migrations

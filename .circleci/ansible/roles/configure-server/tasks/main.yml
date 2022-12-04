@@ -1,9 +1,13 @@
---- 
-- name: "Add .Nodejs from Nodesource"
+---
+- name: Update repositories cache
   become: true
-  shell: |
-    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-
+  apt:
+    update_cache: yes 
+# - name: "Add .Nodejs from Nodesource"
+#   become: yes
+#   shell: |
+#     curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+  # update_cache: yes
 - name: "Update apt cache and make sure Vim is installed"
   become: true
   apt:

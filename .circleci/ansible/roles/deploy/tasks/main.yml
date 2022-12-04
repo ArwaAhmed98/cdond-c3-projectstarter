@@ -1,13 +1,16 @@
 - name: Creates directory # this added because of that error
+  become: true
 #dest '/home/ubuntu/project' must be an existing dir"
   file:
     path: /home/ubuntu/web
     state: directory
 - name: Unarchive a file that is already on the remote machine  
+  become: true
   unarchive:  # this module copy to the remote machine and extract 
     src: artifact.tar.gz
     dest: /home/ubuntu/web
 - name: "start the server"
+  become: true
   shell: |
     cd /home/ubuntu/web
     npm install
