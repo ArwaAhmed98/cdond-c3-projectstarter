@@ -367,7 +367,7 @@ jobs:
       - checkout
       - install_ansible_ubuntu
       - install_aws_cli
-      - install_nodejs13
+      # - install_nodejs13
       - attach_workspace:
           at: ~/
       - add_ssh_keys:
@@ -375,6 +375,11 @@ jobs:
             - "48:8e:2c:c4:5e:eb:e6:57:f4:2f:37:65:ae:f6:69:99"
       - restore_cache:
           keys: [backend-build]
+      - run: 
+          command: |
+            pip install awscli
+            sudo apt update
+            sudo apt install curl nodejs npm ansible zip tar gzip wget rsync --fix-missing
       - run:
           name: Deploy backend
           command: |
