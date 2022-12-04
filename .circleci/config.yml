@@ -179,7 +179,7 @@ jobs:
           command: |
             cd backend
             npm install
-            # npm audit fix --audit-level=critical --force
+            npm audit fix --audit-level=critical --force
             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
             # npm audit --audit-level=critical
       - send_slack
@@ -199,7 +199,7 @@ jobs:
           command: |
             cd backend
             npm install
-            # npm audit fix --audit-level=critical --force
+            npm audit fix --audit-level=critical --force
             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
             # npm audit --audit-level=critical
       - send_slack
@@ -460,15 +460,7 @@ jobs:
                       --no-paginate --output text)
             echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
             curl https://kvdb.io/${KVDB_BUCKET}/old_workflow_id -d "${OLD_WORKFLOW_ID}"
-      - run:
-          name: Update cloudfront distribution
-          command: |
-            # Change the initial stack name, as applicable to you
-            aws cloudformation deploy \
-            --template-file .circleci/files/cloudfront.yml \
-            --stack-name InitialStack \
-            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --tags project=udapeople
+
       # Here's where you will add some code to rollback on failure
       - destroy-environment
       - revert-migrations
