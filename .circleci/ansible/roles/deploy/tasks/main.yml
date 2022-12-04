@@ -5,7 +5,7 @@
     state: directory
 - name: Unarchive a file that is already on the remote machine  
   unarchive:  # this module copy to the remote machine and extract 
-    src: ~/project/artifact.tar.gz
+    src: artifact.tar.gz
     dest: ~/project/web
 - name: "start the server"
   shell: |
