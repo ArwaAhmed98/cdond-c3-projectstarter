@@ -1,32 +1,15 @@
----
-- name: "Creates backend app directory"
+- name: Creates directory # this added because of that error
+#dest '/home/ubuntu/project' must be an existing dir"
   file:
-    path: ~/backend-app
+    path: /home/ubuntu/web
     state: directory
-
-- name: "Unarchive backend files"
-  unarchive:
+- name: Unarchive a file that is already on the remote machine  
+  unarchive:  # this module copy to the remote machine and extract 
     src: artifact.tar.gz
-    dest: ~/backend-app
-
-- name: "Installing Node Dependencies"
+    dest: /home/ubuntu/web
+- name: "start the server"
   shell: |
-    cd ~/backend-app
-    npm i
-
-- name: "Executing Node app with PM2"
-  shell: |
-    cd ~/backend-app/dist
+    cd /home/ubuntu/web
+    npm install
     pm2 stop default
-    pm2 start main.js
-
-  register: execute_node
-
-- name: print message
-  debug:
-    msg: "{{ execute_node.stdout_lines }}"
-
-- name: "Configure pm2 to start as service"
-  shell: |
-    sudo su -c "env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu"
-    pm2 save
+    pm2 start npm -- start
