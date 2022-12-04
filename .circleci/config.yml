@@ -409,7 +409,6 @@ jobs:
       - checkout
       - install_ansible_ubuntu
       - install_aws_cli
-      - install_nodejs13
       - run:
           name: Get backend url
           command: |
@@ -478,7 +477,6 @@ jobs:
       steps:
         - checkout
         - install_aws_cli
-        - install_nodejs
         - run:
             name: Remove old stacks and files
             command: |
