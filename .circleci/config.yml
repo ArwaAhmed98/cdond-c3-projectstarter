@@ -362,7 +362,7 @@ jobs:
                     
   deploy-backend:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/python
     steps:
       - checkout
       - install_ansible_ubuntu
