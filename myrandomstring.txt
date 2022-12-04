@@ -2,7 +2,7 @@ gman6lr3kf
 
 
 cd .circleci/files
-aws cloudformation deploy --tempelate-file cloudfront.yml --stack-name IntialStack --parameter-overrides WorkflowID=gman6lr3kf
+aws cloudformation deploy --template-file cloudfront.yml --stack-name IntialStack --parameter-overrides WorkflowID=gman6lr3kf
 
 
 
