@@ -21,6 +21,5 @@
   become: true
   shell: | # refered from  https://pm2.keymetrics.io/docs/usage/startup/
     sudo su -c "env PATH=$PATH:/usr/local/bin pm2 startup systemd -u ubuntu --hp /home/ubuntu"
-    pm2 save
-    npm install -g Unitech/pm2#development && pm2 update
+    pm2 save --force
     
