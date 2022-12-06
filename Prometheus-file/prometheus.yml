@@ -1,0 +1,92 @@
+# /etc/prometheus/prometheus.yml
+
+ubuntu@ip-172-31-94-31:~$ cat /etc/prometheus/prometheus.yml 
+global:
+  scrape_interval: 1s
+  external_labels:
+    monitor: 'prometheus'
+rule_files:
+ - /etc/prometheus/rules.yml
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - localhost:9093
+scrape_configs:
+  - job_name: 'prometheus'
+    ec2_sd_configs:
+      - region: us-east-1
+        port: 9100
+        filters:
+          - name: tag:Project
+            values: [Udapeople]
+    relabel_configs:
+    - source_labels: [__meta_ec2_tag_Project,__meta_ec2_tag_Name]
+      separator: "_"
+      target_label: instance
+    - source_labels: [__meta_ec2_instance_id]
+      target_label: instance_id
+    - source_labels: [__meta_ec2_public_dns_name]
+      target_label: public_dns_name
+
+# /etc/prometheus/alertmanager.yml
+
+global:
+  resolve_timeout: 1m
+  slack_api_url: <webhook_url>
+
+route:
+  group_by: [Alertname]
+  receiver: alert-me
+
+receivers:
+- name: alert-me
+  email_configs:
+  - to: <your_gmail>
+    from: <your_gmail>
+    send_resolved: true
+    smarthost: smtp.gmail.com:587
+    auth_username: <your_gmail>
+    auth_identity: <your_gmail>
+    auth_password: <yourgmail_app_password>
+
+  slack_configs:
+  - channel: '#monitoring-servers'
+    send_resolved: true
+    icon_url: https://avatars3.githubusercontent.com/u/3380462
+    title: |-
+     [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} for {{ .CommonLabels.job }}
+     {{- if gt (len .CommonLabels) (len .GroupLabels) -}}
+       {{" "}}(
+       {{- with .CommonLabels.Remove .GroupLabels.Names }}
+         {{- range $index, $label := .SortedPairs -}}
+           {{ if $index }}, {{ end }}
+           {{- $label.Name }}="{{ $label.Value -}}"
+         {{- end }}
+       {{- end -}}
+       )
+     {{- end }}
+    text: >-
+     {{ range .Alerts -}}
+     *Alert:* {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
+     *Description:* {{ .Annotations.description }}
+
+     *Details:*
+       {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+       {{ end }}
+     {{ end }}
+# /etc/prometheus/rules.yml
+
+groups:
+- name: Down
+  rules:
+  - alert: InstanceDown
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: 'critical'
+    annotations:
+      summary: "Instance  is down"
+      description: " of job  has been down for more than 3 minutes."
