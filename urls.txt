@@ -1,10 +1,10 @@
 github repo
 https://github.com/ArwaAhmed98/cdond-c3-projectstarter
 prometheus url
-http://3.94.92.218:9090/graph
+http://54.211.104.106:9090/graph
 backend url
-curl http://3.216.252.121:3030/api/status
+curl http://52.203.176.74:3030/api/status
 cloudfront url
-http://d2khrb34xn3x67.cloudfront.net
+http://d2k1vo45993njo.cloudfront.net
 s3 url ( front end )
-https://udapeople-b0e0272.s3.amazonaws.com/index.html
+http://udapeople-42ed2ec.s3.amazonaws.com/index.html
